@@ -16,7 +16,7 @@ FSO systems can deliver high data rates, but their performance degrades with dis
 
 ---
 
-## Highlights (resume-grade)
+## Highlights
 - **ML surrogate model:** RandomForestRegressor trained on **3,000 synthetic FSO link scenarios**  
 - **Strong accuracy:** **RMSE ≈ 4.07×10⁻⁴**, **MAE ≈ 1.42×10⁻⁴**, **R² ≈ 0.993** (held-out test split)
 - **Interactive analysis GUI:** sliders + toggles + live plot updates (Matplotlib widgets)
