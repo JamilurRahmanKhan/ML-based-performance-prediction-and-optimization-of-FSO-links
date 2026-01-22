@@ -1,60 +1,69 @@
-# ML-based-performance-prediction-and-optimization-of-FSO-links
-An interactive Free Space Optics (FSO) Bit Error Rate (BER) and Signal-to-Noise Ratio (SNR) analysis tool with visualization features. Built using Python and Matplotlib, this tool helps researchers, students, and engineers analyze performance trade-offs in FSO systems under varying distances, power levels, and atmospheric conditions.
-# Free Space Optics (FSO) BER & SNR Analysis Tool
+# ML-based Performance Prediction and Optimization of FSO Links
+An end-to-end **Free Space Optics (FSO)** analysis toolkit that combines:
+- **physics-inspired link modeling** (received power → SNR → BER),
+- a trained **ML surrogate model** (Random Forest) for fast BER prediction, and
+- an **interactive desktop dashboard** (Matplotlib widgets) for exploring performance trade-offs across distance / power / divergence, with an optional **rain attenuation mode** driven by real rainfall data.
 
-An interactive desktop tool for analyzing **Bit Error Rate (BER)** and **Signal-to-Noise Ratio (SNR)** in Free Space Optical (FSO) communication systems.  
-Designed for **researchers, students, and engineers**, this tool allows you to explore FSO performance under varying **distances, transmit powers, and atmospheric attenuation conditions**.
-
----
-
-## ✨ Features
-- Interactive **Matplotlib-based GUI** (desktop application).
-- Visualization options:
-  - 📊 Distance vs SNR
-  - 📉 SNR vs BER
-  - 📈 Distance vs BER
-  - 🎛 3D plots: Distance vs SNR vs BER
-- User-friendly sliders and controls for real-time simulation.
-- Atmospheric attenuation and divergence angle modeling.
-- Supports **export of plots** for research and presentation.
+> **Disclaimer (Important):** This project is for educational/research experimentation only. Results depend on the chosen link model assumptions and parameters.
 
 ---
 
-## 🚀 Getting Started
+## What this project does
+FSO systems can deliver high data rates, but their performance degrades with distance and weather conditions. This project lets you:
+- **Predict BER quickly** using a trained ML model instead of running full simulations every time.
+- **Visualize key relationships** (Distance ↔ SNR, BER ↔ SNR, Distance ↔ BER, 3D surfaces).
+- **Explore rain impact** using your rainfall dataset by applying rain attenuation to the link budget (SNR drops → BER rises).
 
-1. Clone Repository
+---
 
-git clone https://github.com/your-username/fso-ber-analysis-tool.git
-cd fso-ber-analysis-tool
+## Highlights (resume-grade)
+- **ML surrogate model:** RandomForestRegressor trained on **3,000 synthetic FSO link scenarios**  
+- **Strong accuracy:** **RMSE ≈ 4.07×10⁻⁴**, **MAE ≈ 1.42×10⁻⁴**, **R² ≈ 0.993** (held-out test split)
+- **Interactive analysis GUI:** sliders + toggles + live plot updates (Matplotlib widgets)
+- **Rain-aware visualization:** reads rainfall CSV (2014–2024) → converts to rain rate → applies power-law attenuation → recomputes SNR/BER
 
-2. Setup Virtual Environment
+---
 
-python3 -m venv venv
-source venv/bin/activate   # (Linux/Mac)
-venv\Scripts\activate      # (Windows)
+## Repo contents
+- `build_and_train_fsober_model.py` — generate synthetic dataset + train model + save artifact
+- `fsomodel_rf.joblib` — saved Random Forest model artifact
+- `predict_ber.py` — CLI demo: predict BER for distance(s) and plot
+- `interactive_fso_demo.py` — interactive GUI (clear-air mode)
+- `interactive_fso_demo_with_rain.py` / `interactive_fso_demo_with_rain_responsive.py` — interactive GUI with rain toggle
+- `CCS_20140101_20240101 (1).csv` — rainfall dataset used for rain statistics
+- `ber_true_vs_pred.png` — model quality plot (true vs predicted)
 
-3. Install Requirements
+---
 
+## Screenshots 
+![DIST-SNR-BER without rain](docs/screenshots/1.png)
+![DIST-SNR-BER with rain](docs/screenshots/2.png)
+![3D View](docs/screenshots/3.png)
+
+---
+
+## Tech stack
+- Python 3.9+ (3.11 recommended)
+- NumPy, Pandas
+- scikit-learn, joblib
+- Matplotlib (+ widgets)
+- mplcursors (tooltips)
+
+---
+
+## Quickstart
+
+### 1) Create environment & install deps
+```bash
+python -m venv .venv
+# mac/linux
+source .venv/bin/activate
+# windows (powershell)
+# .\.venv\Scripts\Activate.ps1
+
+pip install -U pip
 pip install -r requirements.txt
 
-4. Run the Tool
-
-python interactive_fso_demo.py
-
-
-📸 Screenshots
-
-
-🛠 Tech Stack
-	•	Python 3.12+
-	•	Matplotlib
-	•	NumPy
-	•	Tkinter/Matplotlib Widgets
-
-⸻
-
-📚 Research Applications
-	•	Free Space Optics (FSO) link performance evaluation.
-	•	Academic projects on wireless optical communication.
-	•	BER & SNR modeling for different link budgets.
-	•	Comparison with RF communication models.
+# requirements.txt in this repo is minimal.
+# If you get import errors, install the full set below:
+pip install pandas scikit-learn joblib mplcursors
